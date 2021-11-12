@@ -14,72 +14,6 @@
         $shareCodeType = $_GET['shareCodeType'];
         $shareCodesNum = $_GET['shareCodesNum'] ? $_GET['shareCodesNum'] : 10;
         $tableName = "tableName";
-        switch ($shareCodeType) {
-            case "JD_SHARES_CFDL" :
-                $tableName = "jd_share_codes_cfdl";
-                break;
-            case "JD_SHARES_QDLXJ" :
-                $tableName = "jd_share_codes_qdlxj";
-                break;
-            case "JD_SHARES_NRJSG" :
-                $tableName = "jd_share_codes_nrjsg";
-                break;
-            case "JD_SHARES_DDSJ" :
-                // 这里开始没有
-                $tableName = "jd_share_codes_ddsj";
-                break;
-            case "JD_SHARES_JXGC" :
-                $tableName = "jd_share_codes_jxgc";
-                break;
-            case "JD_SHARES_JXGC_TUAN" :
-                $tableName = "jd_share_codes_jxgc_tuan";
-                break;
-            case "JD_SHARES_FRUIT" :
-                $tableName = "jd_share_codes_fruit";
-                break;
-            case "JD_SHARES_HEALTHY" :
-                $tableName = "jd_share_codes_healthy";
-                break;
-            case "JD_SHARES_DDFACTORY" :
-                $tableName = "jd_share_codes_ddfactory";
-                break;
-            case "JD_SHARES_JDZZ" :
-                $tableName = "jd_share_codes_jdzz";
-                break;
-            case "JD_SHARES_JXHB" :
-                $tableName = "jd_share_codes_jxhb";
-                break;
-            case "JD_SHARES_JXMC" :
-                $tableName = "jd_share_codes_jxmc";
-                break;
-            case "JD_SHARES_JXNC" :
-                $tableName = "jd_share_codes_jxnc";
-                break;
-            case "JD_SHARES_PETS" :
-                $tableName = "jd_share_codes_pets";
-                break;
-            case "JD_SHARES_PLANT_BEAN" :
-                $tableName = "jd_share_codes_plant_bean";
-                break;
-            case "JD_SHARES_JLHB" :
-                $tableName = "jd_share_codes_jlhb";
-                break;
-            case "JD_SHARES_SGMH" :
-                $tableName = "jd_share_codes_sgmh";
-                break;
-            case "JD_SHARES_JDXW" :
-                $tableName = "jd_share_codes_jdxw";
-                break;
-            case "JD_SHARES_SUPERMARKET" :
-                $tableName = "jd_share_codes_supermarket";
-                break;
-            case "JD_SHARES_WISH" :
-                $tableName = "jd_share_codes_wish";
-                break;
-            default :
-                exit();
-        }
-
         $conf = [
             'host'=>'localhost',
             'port'=>3306,
@@ -87,20 +21,248 @@
             'passwd'=>'nyjnyj8866',
             'dbname'=>'jdsharecodes',
         ];
-
         $mysql = new MMysql($conf);
-        // 执行sql查询我的资料
-        $sql = "SELECT share_code FROM $tableName order by id;";
-        $all = $mysql->doSql($sql);
+        switch ($shareCodeType) {
+            case "JD_SHARES_CFDL" :
+                $tableName = "jd_share_codes_cfdl";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
 
-        $res = $mysql->field('share_code')
-            ->limit($shareCodesNum)
-            ->select($tableName);
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_QDLXJ" :
+                $tableName = "jd_share_codes_qdlxj";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
 
-        // 获取字段
-        $shareCodes = array_map('array_shift', $res);
-        $jsonStr = json_encode($shareCodes);
-        echo $jsonStr;
-        // 关闭数据库
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_NRJSG" :
+                $tableName = "jd_share_codes_nrjsg";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_DDSJ" :
+                // 获取字段
+                $res = $mysql->field(array('share_code', 'pt_pin'))
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+                $objArr = [];
+                for ($i = 0; $i < sizeof($res); $i++) {
+                    $obj['use'] = $res[$i]['pt_pin'];
+                    $obj['code'] = $res[$i]['share_code'];
+                    $obj['max'] = false;
+                    array_push($objArr, $obj);
+                }
+                $jsonStr = json_encode($objArr);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_JXGC" :
+                $tableName = "jd_share_codes_jxgc";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_JXGC_TUAN" :
+                $tableName = "jd_share_codes_jxgc_tuan";
+                // 执行sql查询我的资料
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_FRUIT" :
+                $tableName = "jd_share_codes_fruit";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_HEALTHY" :
+                $tableName = "jd_share_codes_healthy";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_DDFACTORY" :
+                $tableName = "jd_share_codes_ddfactory";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_JDZZ" :
+                $tableName = "jd_share_codes_jdzz";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_JXHB" :
+                $tableName = "jd_share_codes_jxhb";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_JXMC" :
+                $tableName = "jd_share_codes_jxmc";
+                $res = null;
+                $type = null;
+                $rsName = null;
+                if ($_GET['type'] == 'hb') {
+                    $type = 'share_red_code';
+                    $rsName = 'use';
+                } else {
+                    $type = 'share_code';
+                    $rsName = 'name';
+                }
+                $res = $mysql->field(array($type, 'pt_pin'))
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+                $objArr = [];
+                for ($i = 0; $i < sizeof($res); $i++) {
+                    $obj[$rsName] = $res[$i]['pt_pin'];
+                    $obj['code'] = $res[$i][$type];
+                    $obj['max'] = false;
+                    array_push($objArr, $obj);
+                }
+                $jsonStr = json_encode($objArr);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_JXNC" :
+                $tableName = "jd_share_codes_jxnc";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_PETS" :
+                $tableName = "jd_share_codes_pets";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_PLANT_BEAN" :
+                $tableName = "jd_share_codes_plant_bean";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_JLHB" :
+                $tableName = "jd_share_codes_jlhb";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_SGMH" :
+                $tableName = "jd_share_codes_sgmh";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_JDXW" :
+                $tableName = "jd_share_codes_jdxw";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_SUPERMARKET" :
+                $tableName = "jd_share_codes_supermarket";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            case "JD_SHARES_WISH" :
+                $tableName = "jd_share_codes_wish";
+                $res = $mysql->field('share_code')
+                    ->limit($shareCodesNum)
+                    ->select($tableName);
+
+                // 获取字段
+                $shareCodes = array_map('array_shift', $res);
+                $jsonStr = json_encode($shareCodes);
+                echo $jsonStr;
+                break;
+            default :
+        }
         $mysql->close();
     }
