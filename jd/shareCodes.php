@@ -17,9 +17,9 @@
         $conf = [
             'host'=>'localhost',
             'port'=>3306,
-            'user'=>'zhu3woshicao',
-            'passwd'=>'nyjnyj8866',
-            'dbname'=>'jdsharecodes',
+            'user'=>'',
+            'passwd'=>'',
+            'dbname'=>'',
         ];
         $mysql = new MMysql($conf);
         switch ($shareCodeType) {
@@ -58,6 +58,7 @@
                 break;
             case "JD_SHARES_DDSJ" :
                 // 获取字段
+                $tableName = "jd_share_codes_ddsj";
                 $res = $mysql->field(array('share_code', 'pt_pin'))
                     ->limit($shareCodesNum)
                     ->select($tableName);
